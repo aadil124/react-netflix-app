@@ -2,9 +2,33 @@ import React, { useState } from "react";
 import BackgroundImage from "../component/BackgroundImage";
 import Header from "../component/Header";
 import styled from "styled-components";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { firebaseAuth } from "../utils/firebase-config";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [formValues, setFormValues] = useState({
+    email: "",
+    password: "",
+  });
+  const handleSignIn = async () => {
+    console.log(formValues);
+    try {
+      const { email, password } = formValues;
+      await createUserWithEmailAndPassword(firebaseAuth, email, password);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const navigate = useNavigate();
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (currentUser) navigate("/");
+  });
   return (
     <Container showPassword={showPassword}>
       <BackgroundImage />
@@ -24,6 +48,13 @@ const SignUp = () => {
                 name="email"
                 id="email"
                 placeholder="Email address"
+                value={formValues.email}
+                onChange={(e) =>
+                  setFormValues({
+                    ...formValues,
+                    [e.target.name]: e.target.value,
+                  })
+                }
               />
 
               {showPassword && (
@@ -32,6 +63,13 @@ const SignUp = () => {
                   name="password"
                   id="password"
                   placeholder="Password"
+                  value={formValues.password}
+                  onChange={(e) =>
+                    setFormValues({
+                      ...formValues,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
                 />
               )}
 
@@ -45,7 +83,9 @@ const SignUp = () => {
               )}
             </div>
 
-            <button>Sign Up</button>
+            <button className="button" onClick={handleSignIn}>
+              Sign Up
+            </button>
           </div>
         </div>
       </div>
