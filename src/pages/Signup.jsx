@@ -1,7 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 import BackgroundImage from "../component/BackgroundImage";
 import Header from "../component/Header";
 import styled from "styled-components";
+
+const SignUp = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  return (
+    <Container showPassword={showPassword}>
+      <BackgroundImage />
+      <div className="content">
+        <Header />
+        <div className="body flex column">
+          <div className="text flex column a-center j-center">
+            <h1>Unlimited movies, TV shows and more</h1>
+            <h4>Watch anywhere. Cancel anytime.</h4>
+            <h6>
+              Ready to watch? Enter your email to create or restart your
+              membership.
+            </h6>
+            <div className="form">
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Email address"
+              />
+
+              {showPassword && (
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="Password"
+                />
+              )}
+
+              {!showPassword && (
+                <button
+                  onClick={() => setShowPassword(true)}
+                  className="button"
+                >
+                  Get Started
+                </button>
+              )}
+            </div>
+
+            <button>Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </Container>
+  );
+};
 
 const Container = styled.div`
   position: relative;
@@ -15,42 +65,49 @@ const Container = styled.div`
     left: 0;
     background-color: rgb(0, 0, 0, 0.5);
   }
-`;
+  .body {
+    gap: 1rem;
+    text-align: center;
+    font-size: 1rem;
+    h1 {
+      padding: 0 25rem;
+    }
+    .form {
+      display: grid;
+      grid-template-columns:${({ showPassword }) =>
+        showPassword ? "1fr 1fr" : "2fr 1fr"}
+      width: 60%;
+      input {
+        color: black;
+        border: none;
+        padding: 1rem;
+        font-size: 1.2rem;
+        border: 1px solid black;
+        &:focus {
+          outline: none;
 
-const SignUp = () => {
-  return (
-    <Container>
-      <Header />
-      <div className="body flex column a-center j-center content">
-        <div className="text flex column">
-          <h1>Unlimited movies, TV shows and more</h1>
-          <h4>Watch anywhere. Cancel anytime.</h4>
-          <h6>
-            Ready to watch? Enter your email to create or restart your
-            membership.
-          </h6>
-          <div className="form">
-            <input
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Email address"
-            />
-            <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Password"
-            />
-            <button>Get Started</button>
-          </div>
-          <button>Log In</button>
-        </div>
-      </div>
-      <BackgroundImage />
-      <div className="content"></div>
-    </Container>
-  );
-};
+        }
+      }
+      .button {
+        padding: 0.5rem 1rem;
+        background-color: #E50914;
+        border: none;
+        cursor: pointer;
+        border-radius: 0;
+        font-weight: bolder;
+        font-size: 1.05rem;
+      }
+    }
+    .button {
+      padding: 0.5rem 1rem;
+      background-color: #E50914;
+      border: none;
+      cursor: pointer;
+      border-radius: 0.2rem;
+      font-weight: bolder;
+      font-size: 1.05rem;
+    }
+  }
+`;
 
 export default SignUp;
