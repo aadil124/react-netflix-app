@@ -6,11 +6,12 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
-import { firebaseAuth } from "../utils/firebase-config";
 import { useNavigate } from "react-router-dom";
+import { firebaseAuth } from "../utils/firebase-config";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
@@ -25,7 +26,6 @@ const SignUp = () => {
     }
   };
 
-  const navigate = useNavigate();
   onAuthStateChanged(firebaseAuth, (currentUser) => {
     if (currentUser) navigate("/");
   });
